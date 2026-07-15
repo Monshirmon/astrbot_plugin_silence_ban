@@ -1,0 +1,6 @@
+name: astrbot_plugin_silence_ban
+display_name: 说不理你就不理你（SilenceBan黑名单插件）
+version: v1.0.0
+author: Monshirmon
+desc: 当LLM回复”不理你了”/”真的不理你了”两次后，自动将用户加入黑名单。支持随机时长封禁，管理员可在插件界面配置随机时长区间，也可手动封禁/解封用户。
+repo: https://github.com/Monshirmon/astrbot_plugin_silence_ban

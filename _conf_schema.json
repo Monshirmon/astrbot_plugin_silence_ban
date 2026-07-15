@@ -1,0 +1,32 @@
+{
+    "enable": {
+        "description": "是否启用禁用功能",
+        "type": "bool",
+        "default": true
+    },
+    "cache_ttl": {
+        "description": "缓存存活时间（秒）",
+        "type": "int",
+        "default": 60
+    },
+    "auto_ban_enable": {
+        "description": "是否启用“不理你”自动封禁功能",
+        "type": "bool",
+        "default": true
+    },
+    "trigger_count": {
+        "description": "触发“不理你了”话术多少次后自动封禁",
+        "type": "int",
+        "default": 2
+    },
+    "min_random_ban_seconds": {
+        "description": "随机封禁的最小时长（秒）",
+        "type": "int",
+        "default": 60
+    },
+    "max_random_ban_seconds": {
+        "description": "随机封禁的最大时长（秒）",
+        "type": "int",
+        "default": 86400
+    }
+}

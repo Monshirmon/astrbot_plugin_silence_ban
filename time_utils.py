@@ -1,0 +1,102 @@
+import re
+
+from .exceptions import TimestrValueError
+
+_TIME_RE = re.compile(
+    r"^(?=.*\d)(?:(?P<days>\d+)d)?(?:(?P<hours>\d+)h)?(?:(?P<minutes>\d+)m)?(?:(?P<seconds>\d+)s?)?$"
+)
+
+
+def timelast_format(time_last: int) -> str:
+    """
+    将剩余秒数格式化为易读的时间描述
+    """
+    if time_last < 0:
+        return "已过期"
+    if time_last == 0:
+        return "永久"
+
+    days = time_last // 86400
+    hours = (time_last % 86400) // 3600
+    minutes = (time_last % 3600) // 60
+    seconds = time_last % 60
+
+    result = ["剩余"]
+    if days > 0:
+        result.append(f"{days}天")
+    if hours > 0:
+        result.append(f"{hours}小时")
+    if minutes > 0:
+        result.append(f"{minutes}分钟")
+    if seconds > 0 or not result:
+        result.append(f"{seconds}秒")
+
+    return "".join(result)
+
+
+def time_format(time_str: str) -> str:
+    """
+    将时间字符串格式化为易读的时间描述
+    """
+    if time_str == "0":
+        return "永久"
+    time = timestr_to_int(time_str)
+
+    days = time // 86400
+    hours = (time % 86400) // 3600
+    minutes = (time % 3600) // 60
+    seconds = time % 60
+
+    result = []
+    if days > 0:
+        result.append(f"{days}天")
+    if hours > 0:
+        result.append(f"{hours}小时")
+    if minutes > 0:
+        result.append(f"{minutes}分钟")
+    if seconds > 0 or not result:
+        result.append(f"{seconds}秒")
+
+    return "".join(result)
+
+
+def timestr_to_int(timestr: str) -> int:
+    """
+    将时间字符串（如 1d2h3m4）转换为秒数
+    """
+    m = _TIME_RE.fullmatch(timestr)
+    if not m:
+        raise TimestrValueError(timestr)
+
+    parts = {k: int(v or 0) for k, v in m.groupdict().items()}
+    return (
+        parts["days"] * 86400
+        + parts["hours"] * 3600
+        + parts["minutes"] * 60
+        + parts["seconds"]
+    )
+
+
+def seconds_to_timestr(seconds: int) -> str:
+    """
+    将秒数转换为时间字符串格式（如 86400 -> "1d"）
+    """
+    if seconds <= 0:
+        return "0"
+
+    days = seconds // 86400
+    hours = (seconds % 86400) // 3600
+    minutes = (seconds % 3600) // 60
+    secs = seconds % 60
+
+    result = []
+    if days > 0:
+        result.append(f"{days}d")
+    if hours > 0:
+        result.append(f"{hours}h")
+    if minutes > 0:
+        result.append(f"{minutes}m")
+    if secs > 0:
+        result.append(f"{secs}s")
+
+    return "".join(result) if result else "0"
